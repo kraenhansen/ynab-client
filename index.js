@@ -73,10 +73,14 @@ const ynab = {
       return response;
     });
   },
-  createTransaction: (data) => {
-    const id = uuid();
+  getTransactions: () => {
+    return ynab.syncBudgetData().then(response => {
+      return response.changed_entities.be_transactions;
+    });
+  },
+  addTransactions: (transactionsData) => {
     const defaults = {
-      id,
+      'id': null,
       'is_tombstone': false,
       'source': null,
       'entities_account_id': null,
@@ -109,14 +113,58 @@ const ynab = {
       'device_knowledge_of_server': ynab.serverKnowledge,
       'calculated_entities_included': false,
       'changed_entities': {
-        'be_transaction_groups': [{
-          'id': id,
-          'be_transaction': _.merge(defaults, data),
-          'be_subtransactions': null,
-          'be_matched_transaction': null
-        }]
+        'be_transaction_groups': transactionsData.map(data => {
+          const id = uuid();
+          return {
+            'id': id,
+            'be_transaction': _.merge(defaults, { id }, data),
+            'be_subtransactions': null,
+            'be_matched_transaction': null
+          };
+        })
       }
     });
+  },
+  addTransaction: (data) => {
+    return ynab.addTransactions([data]);
+  },
+  updateTransactions: (transactionsDatas) => {
+    return ynab.syncBudgetData({
+      'budget_version_id': ynab.budgetVersionId,
+      'starting_device_knowledge': ynab.deviceKnowledge,
+      'ending_device_knowledge': ynab.deviceKnowledge + 1,
+      'device_knowledge_of_server': ynab.serverKnowledge,
+      'calculated_entities_included': false,
+      'changed_entities': {
+        'be_transaction_groups': transactionsDatas.map(data => {
+          return {
+            'id': data.id,
+            'be_transaction': data,
+            'be_subtransactions': null,
+            'be_matched_transaction': null
+          };
+        })
+      }
+    });
+  },
+  updateTransaction: (data) => {
+    return ynab.updateTransactions([data]);
+  },
+  removeTransactions: (ids) => {
+    // Get all transactions
+    return ynab.getTransactions().then(transactions => {
+      // Filter out the transactions based on id
+      return transactions.filter(transaction => ids.indexOf(transaction.id) > -1);
+    }).then(transactions => {
+      transactions.forEach(transaction => {
+        // Send an update with is_tombstone: true
+        transaction['is_tombstone'] = true;
+      });
+      return ynab.updateTransactions(transactions);
+    });
+  },
+  removeTransaction: (id) => {
+    return ynab.removeTransactions([id]);
   }
 };
 
