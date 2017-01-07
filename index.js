@@ -30,26 +30,26 @@ const ynab = {
       headers
     }).then(JSON.parse);
   },
-  loginUser: (email, password) => {
+  loginUser: (data) => {
+    const defaults = {
+      'remember_me': false,
+      'device_info': ynab.deviceInfo
+    };
     return ynab.postRequest({
       'operation_name': 'loginUser',
-      'request_data': JSON.stringify({
-        email,
-        password,
-        'remember_me': false,
-        'device_info': ynab.deviceInfo
-      })
+      'request_data': JSON.stringify(_.merge(defaults, data))
     }).then(response => {
       ynab.sessionToken = response['session_token'];
       return response;
     });
   },
-  getInitialUserData: () => {
+  getInitialUserData: (data) => {
+    const defaults = {
+      'device_info': ynab.deviceInfo
+    };
     return ynab.postRequest({
       'operation_name': 'getInitialUserData',
-      'request_data': JSON.stringify({
-        'device_info': ynab.deviceInfo
-      })
+      'request_data': JSON.stringify(_.merge(defaults, data))
     });
   },
   syncBudgetData: (data) => {

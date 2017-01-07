@@ -15,7 +15,7 @@ describe('ynab', function() {
 
   describe('loginUser', function() {
     it('should return a session id', function(done) {
-      ynab.loginUser(email, password).then((response) => {
+      ynab.loginUser({email, password}).then((response) => {
         assert(response);
         assert(!response.error);
         assert(response['session_token']);
