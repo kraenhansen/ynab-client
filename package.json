@@ -1,0 +1,32 @@
+{
+  "name": "ynab-client",
+  "version": "0.1.0",
+  "description": "A simple unofficial client for youneedabudget.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "dev": "mocha -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kraenhansen/ynab-client.git"
+  },
+  "keywords": [
+    "ynab"
+  ],
+  "author": "Kræn Hansen <mail@kraenhansen.dk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kraenhansen/ynab-client/issues"
+  },
+  "homepage": "https://github.com/kraenhansen/ynab-client#readme",
+  "devDependencies": {
+    "dotenv": "^2.0.0",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  }
+}
