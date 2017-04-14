@@ -166,6 +166,11 @@ const ynab = {
   },
   removeTransaction: (id) => {
     return ynab.removeTransactions([id]);
+  },
+  getAccounts: () => {
+    return ynab.syncBudgetData().then(response => {
+      return response.changed_entities.be_accounts;
+    });
   }
 };
 
