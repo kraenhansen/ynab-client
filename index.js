@@ -109,7 +109,7 @@ const ynab = {
     return ynab.syncBudgetData({
       'budget_version_id': ynab.budgetVersionId,
       'starting_device_knowledge': ynab.deviceKnowledge,
-      'ending_device_knowledge': ynab.deviceKnowledge + 1,
+      'ending_device_knowledge': ynab.deviceKnowledge + transactionsData.length,
       'device_knowledge_of_server': ynab.serverKnowledge,
       'calculated_entities_included': false,
       'changed_entities': {
@@ -132,7 +132,7 @@ const ynab = {
     return ynab.syncBudgetData({
       'budget_version_id': ynab.budgetVersionId,
       'starting_device_knowledge': ynab.deviceKnowledge,
-      'ending_device_knowledge': ynab.deviceKnowledge + 1,
+      'ending_device_knowledge': ynab.deviceKnowledge + transactionsDatas.length,
       'device_knowledge_of_server': ynab.serverKnowledge,
       'calculated_entities_included': false,
       'changed_entities': {
