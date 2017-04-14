@@ -159,6 +159,7 @@ const ynab = {
       transactions.forEach(transaction => {
         // Send an update with is_tombstone: true
         transaction['is_tombstone'] = true;
+        transaction['source'] = null;
       });
       return ynab.updateTransactions(transactions);
     });
